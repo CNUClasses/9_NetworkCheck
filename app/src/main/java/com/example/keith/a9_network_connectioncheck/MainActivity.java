@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void doNetworkCheck(View view) {
         String res =myCheck.isNetworkReachable()?"Network Reachable":"No Network";
-
         Toast.makeText(this, res,Toast.LENGTH_SHORT).show();
     }
 
