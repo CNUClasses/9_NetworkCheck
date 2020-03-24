@@ -1,10 +1,5 @@
 package com.example.keith.a9_network_connectioncheck;
 
-/**
- * Created by keith on 3/14/17.
- */
-
-import android.app.AlertDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
