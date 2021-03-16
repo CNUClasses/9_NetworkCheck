@@ -5,27 +5,25 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 public class ConnectivityCheck {
-    Context context;
+    private Context context;
 
     ConnectivityCheck(Context context) {
         this.context = context;
     }
 
     public boolean isNetworkReachable() {
-        ConnectivityManager mManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo current = mManager.getActiveNetworkInfo();
-        if (current == null) {
-            return false;
-        }
-        return (current.getState() == NetworkInfo.State.CONNECTED);
-    }
+        NetworkInfo current = getNetworkInfo();
+        return (current == null)?false:(current.getState() == NetworkInfo.State.CONNECTED);
+      }
 
     public boolean isWifiReachable() {
+        NetworkInfo current = getNetworkInfo();
+        return (current == null)?false:(current.getType() == ConnectivityManager.TYPE_WIFI);
+     }
+
+    private NetworkInfo getNetworkInfo() {
         ConnectivityManager mManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo current = mManager.getActiveNetworkInfo();
-        if (current == null) {
-            return false;
-        }
-        return (current.getType() == ConnectivityManager.TYPE_WIFI);
+        return mManager.getActiveNetworkInfo();
     }
+
 }
