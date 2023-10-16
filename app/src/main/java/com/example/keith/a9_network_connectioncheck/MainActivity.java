@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void doWirelessCheck(View view) {
-        String res =myCheck.isWifiReachable()?"WiFi Reachable":"No WiFi";
+        String res =myCheck.isUnmeteredReachable()?"WiFi Reachable":"No WiFi";
         Toast.makeText(this, res,Toast.LENGTH_SHORT).show();
     }
 }

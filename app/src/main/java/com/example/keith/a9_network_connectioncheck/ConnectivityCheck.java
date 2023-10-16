@@ -1,10 +1,19 @@
 package com.example.keith.a9_network_connectioncheck;
 
+import static android.net.NetworkCapabilities.NET_CAPABILITY_NOT_METERED;
+import static android.net.NetworkCapabilities.NET_CAPABILITY_VALIDATED;
+
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 
 public class ConnectivityCheck {
+    //this class provides basic internet connectivity checks
+    //see https://developer.android.com/reference/android/net/NetworkCapabilities
+    //for other capabilities
+
     private Context context;
 
     ConnectivityCheck(Context context) {
@@ -12,18 +21,25 @@ public class ConnectivityCheck {
     }
 
     public boolean isNetworkReachable() {
-        NetworkInfo current = getNetworkInfo();
-        return (current == null)?false:(current.getState() == NetworkInfo.State.CONNECTED);
+        //can you get to the internet?
+        NetworkCapabilities caps = getNetworkInfo();
+        return (caps == null)?false:(caps.hasCapability(NET_CAPABILITY_VALIDATED));
       }
 
-    public boolean isWifiReachable() {
-        NetworkInfo current = getNetworkInfo();
-        return (current == null)?false:(current.getType() == ConnectivityManager.TYPE_WIFI);
+    public boolean isUnmeteredReachable() {
+        //can you connect to a network that does not charge? (many WiFi's, cellular to a pint)
+        NetworkCapabilities caps = getNetworkInfo();
+        return (caps == null)?false:(caps.hasCapability(NET_CAPABILITY_NOT_METERED));
      }
 
-    private NetworkInfo getNetworkInfo() {
-        ConnectivityManager mManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return mManager.getActiveNetworkInfo();
+    private NetworkCapabilities getNetworkInfo() {
+        ConnectivityManager connectivityManager = context.getSystemService(ConnectivityManager.class);
+        Network currentNetwork = connectivityManager.getActiveNetwork();
+
+        if (currentNetwork == null)
+            return null;    //no network
+
+        return connectivityManager.getNetworkCapabilities(currentNetwork);
     }
 
 }
